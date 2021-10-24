@@ -11,7 +11,9 @@ npm install --save react-form-builder-component
 ```
 
 ## Usage
+
 Form Builder
+
 ```jsx
 import { FormBuilder } from 'react-form-builder-component'
 ...
@@ -19,6 +21,7 @@ import { FormBuilder } from 'react-form-builder-component'
 ```
 
 Render Form
+
 ```jsx
 import { FormRender } from 'react-form-builder-component'
 ...
@@ -26,6 +29,7 @@ import { FormRender } from 'react-form-builder-component'
 ```
 
 Combining FormBuilder with FormRender to preview form on the go
+
 ```jsx
 import React, { useState } from 'react'
 

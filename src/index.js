@@ -1,5 +1,5 @@
-import FormBuilder from './components/Builder'
-import FormRender from './components/Form'
+import FormBuilder from "./components/Builder"
+import FormRender from "./components/Form"
 
 // export Foo and Bar as named exports
 export { FormBuilder, FormRender }
