@@ -7,9 +7,10 @@ import Radio from "./Radio"
 import Paragraph from "./Paragraph"
 import Header from "./Header"
 import { fromBuilderStub } from "./helper"
+import { Box, Button, Divider, Stack, Typography } from "@mui/material"
 
 const Form = (props) => {
-  const { properties, required, ui, description, title, onsubmit, values } = props
+  const { properties, required, ui, description, title, onsubmit, values, disabled } = props
   const [requiredFields, setRequiredFields] = useState(required ? required : [])
   const [form, setFormState] = useState(values ? values : {})
 
@@ -20,6 +21,7 @@ const Form = (props) => {
       case "input":
         return (
           <Input
+            disabled={disabled}
             key={key + pid}
             value={form?.[key]}
             required={requiredFields.includes(key)}
@@ -31,6 +33,7 @@ const Form = (props) => {
       case "select":
         return (
           <Select
+            disabled={disabled}
             key={key + pid}
             {...property}
             {...ui[key]}
@@ -41,6 +44,7 @@ const Form = (props) => {
       case "radio":
         return (
           <Radio
+            disabled={disabled}
             key={key + pid}
             {...property}
             {...ui[key]}
@@ -51,6 +55,7 @@ const Form = (props) => {
       case "checkbox":
         return (
           <Checkbox
+            disabled={disabled}
             key={key + pid}
             {...property}
             {...ui[key]}
@@ -61,6 +66,7 @@ const Form = (props) => {
       case "textarea":
         return (
           <Textarea
+            disabled={disabled}
             key={key + pid}
             {...property}
             {...ui[key]}
@@ -92,15 +98,22 @@ const Form = (props) => {
 
   return (
     <form onSubmit={(e) => handleFormSubmit(e)}>
-      <h2 className="my-3">{title}</h2>
-      <p>{description}</p>
-      {properties &&
-        Object.keys(properties).map((key, pid) => {
-          return properties[key] && render(properties[key], key, pid)
-        })}
-      <button type="submit" className={`${fromBuilderStub.btnClass} btn-primary`}>
-        Submit
-      </button>
+      <Stack spacing={2}>
+        <Box>
+          <Typography variant="h4">{title}</Typography>
+          <Typography>{description}</Typography>
+        </Box>
+        <Divider />
+        {properties &&
+          Object.keys(properties).map((key, pid) => {
+            return properties[key] && render(properties[key], key, pid)
+          })}
+        <Box>
+          <Button type="submit" variant="contained" disabled={disabled}>
+            Submit
+          </Button>
+        </Box>
+      </Stack>
     </form>
   )
 }

@@ -1,12 +1,12 @@
 import React from "react"
-import { fromBuilderStub } from "./helper"
+import { Typography } from "@mui/material"
 
 const Paragraph = (props) => {
   const { title, description } = props
   return (
-    <div className={`${fromBuilderStub.inputWrapperClass}`}>
-      <label>{title}</label>
-      <p>{description}</p>
+    <div>
+      <Typography variant="h5">{title}</Typography>
+      <Typography>{description}</Typography>
     </div>
   )
 }

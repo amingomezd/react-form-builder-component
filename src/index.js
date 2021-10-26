@@ -1,8 +1,10 @@
-import FormBuilder from "./components/Builder"
-import FormRender from "./components/Form"
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
 
-// export Foo and Bar as named exports
-export { FormBuilder, FormRender }
-
-// you can optionally also set a default export for your module
-// export default { FormBuilder, FormRender }
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById("poll")
+)

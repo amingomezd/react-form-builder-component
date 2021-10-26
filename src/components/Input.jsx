@@ -1,21 +1,18 @@
 import React from "react"
-import { fromBuilderStub } from "./helper"
+import { TextField } from "@mui/material"
 
 const Input = (props) => {
-  const { onChange, title, name, autofocus, type, className, value, required } = props
+  const { onChange, title, name, autofocus, value, required, disabled } = props
   return (
-    <div className={`${fromBuilderStub.inputWrapperClass}`}>
-      <label>{title}</label>
-      <input
-        type={type}
-        required={required}
-        autoFocus={autofocus ? "autofocus" : false}
-        onChange={onChange ? (e) => onChange(e) : ""}
-        name={name}
-        value={value}
-        className={`${fromBuilderStub.inputClass} ${className}`}
-      />
-    </div>
+    <TextField
+      label={title}
+      name={name}
+      autofocus={autofocus}
+      required={required}
+      onChange={onChange ? (e) => onChange(e) : ""}
+      value={value}
+      disabled={disabled}
+    />
   )
 }
 

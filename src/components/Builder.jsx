@@ -1,6 +1,22 @@
-import React, { Fragment, useEffect, useState } from "react"
-import { fromBuilderStub, textAreaAdjust } from "./helper"
+import React, { useEffect, useState } from "react"
+import { fromBuilderStub } from "./helper"
 import { v4 as uuidv4 } from "uuid"
+import {
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material"
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"
+import DeleteIcon from "@mui/icons-material/Delete"
 
 const Builder = (props) => {
   const { onSave, onChange, formState, propertyName } = props
@@ -83,99 +99,74 @@ const Builder = (props) => {
   }
 
   return (
-    <Fragment>
-      <h2>
-        Form Detail{" "}
-        <button
-          className={`${fromBuilderStub.btnClass} btn${showCode ? "" : "-outline"}-primary`}
-          onClick={() => setShowCode(!showCode)}
-        >
-          {"{  }"}
-        </button>
-      </h2>
-
-      {showCode && (
-        <textarea
-          autoFocus={true}
-          onFocus={(e) => textAreaAdjust(e)}
-          onKeyUp={(e) => textAreaAdjust(e)}
-          className="form-control"
-          onChange={handleChangeFormCode}
-          value={JSON.stringify(form, undefined, 4)}
+    <Stack spacing={2}>
+      <Stack spacing={2}>
+        <TextField label="Form Title" name="title" onChange={handleChangeFormInput} value={form.title} />
+        <TextField
+          label="description"
+          name="description"
+          placeholder="Minimum 3 rows"
+          multiline
+          rows={3}
+          onChange={handleChangeFormInput}
+          value={form.description}
         />
-      )}
-
-      {!showCode && (
-        <>
-          <div className="form-group">
-            <label>Form Title</label>
-            <input
-              type="text"
-              className={fromBuilderStub.inputClass}
-              name="title"
-              onChange={handleChangeFormInput}
-              value={form.title}
-            />
-          </div>
-          <div className="form-group">
-            <label>Description</label>
-            <textarea
-              className={fromBuilderStub.inputClass}
-              name="description"
-              onChange={handleChangeFormInput}
-              value={form.description}
-            />
-          </div>
-
-          <h3 className="mt-3">Properties</h3>
-          <button
-            className={`${fromBuilderStub.btnClass} btn${addProperty ? "" : "-outline"}-primary btn-block`}
+      </Stack>
+      <Divider />
+      <Stack spacing={2}>
+        <Typography variant="h5">Properties</Typography>
+        <Box sx={{ display: "flex", height: "100%" }} justifyContent="center">
+          <Button
+            variant={addProperty ? "text" : "outlined"}
             onClick={() => toggleAdd(!addProperty)}
+            endIcon={<AddCircleOutlineIcon />}
           >
-            <i className="fa fa-plus-circle" /> Add Property
-          </button>
-          {addProperty && (
-            <div className="bg-primary rounded p-2">
-              <PropertyForm onPropertySubmit={handlePropertyUpdate} name={uuidv4()} />
-            </div>
-          )}
-          <ul className="list-unstyled border-top">
-            {Object.keys(form.properties).map((key, idx) => {
-              return (
-                <li key={key + idx} className={`border p-2 rounded my-1 ${editProperty === key ? "bg-primary" : ""}`}>
-                  <span
-                    onClick={() => toggleEdit(key)}
-                    className={`font-weight-bold btn-link btn ${editProperty === key ? "text-white" : "text-dark"}`}
-                  >
+            Add Property
+          </Button>
+        </Box>
+        {addProperty && (
+          <Box component="span" sx={{ p: 2, border: "1px dashed grey", borderRadius: "5px" }}>
+            <PropertyForm onPropertySubmit={handlePropertyUpdate} name={uuidv4()} />
+          </Box>
+        )}
+      </Stack>
+
+      <List>
+        {Object.keys(form.properties).map((key, idx) => {
+          return (
+            <>
+              <ListItem
+                key={key + idx}
+                disablePadding
+                secondaryAction={
+                  <IconButton aria-label="delete" onClick={() => removeProperty(key)}>
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              >
+                <ListItemButton onClick={() => toggleEdit(key)}>
+                  <ListItemText>
                     {form.properties[key].title} {editProperty === key ? "- Edit" : ""}
-                  </span>
-                  <button
-                    onClick={() => removeProperty(key)}
-                    className={`${fromBuilderStub.btnClass}  float-right ${
-                      editProperty === key ? "btn-primary" : "btn-link"
-                    }`}
-                  >
-                    X
-                  </button>
-                  {editProperty === key && (
-                    <PropertyForm
-                      onPropertySubmit={handlePropertyUpdate}
-                      name={key}
-                      property={form.properties[key]}
-                      required={form.required}
-                      ui={form.ui[key]}
-                    />
-                  )}
-                </li>
-              )
-            })}
-          </ul>
-        </>
-      )}
-      <button type="button" className={`${fromBuilderStub.btnClass} btn-primary`} onClick={(e) => onSave(e)}>
+                  </ListItemText>
+                </ListItemButton>
+              </ListItem>
+              {editProperty === key && (
+                <PropertyForm
+                  onPropertySubmit={handlePropertyUpdate}
+                  name={key}
+                  property={form.properties[key]}
+                  required={form.required}
+                  ui={form.ui[key]}
+                />
+              )}
+            </>
+          )
+        })}
+      </List>
+      <Button variant="contained" onClick={(e) => onSave(e)}>
         Save Form
-      </button>
-    </Fragment>
+      </Button>
+    </Stack>
   )
 }
 
@@ -229,9 +220,11 @@ const PropertyForm = (props) => {
           onChange={handleChangeFormInput}
         >
           {fromBuilderStub.widgets.map((widget, idx) => {
+            let widgetName = Object.values(widget).toString()
+            let widgetType = Object.keys(widget).toString()
             return (
-              <option key={widget + idx} value={widget}>
-                {widget}
+              <option key={widgetType + idx} value={widgetType}>
+                {widgetName}
               </option>
             )
           })}

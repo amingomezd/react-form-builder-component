@@ -1,36 +1,38 @@
 import React from "react"
-import { fromBuilderStub } from "./helper"
+import { InputLabel, Select as SelectMui, MenuItem, FormControl } from "@mui/material"
 
 const Select = (props) => {
-  const { onChange, title, name, autofocus, className, options, required } = props
+  const { onChange, title, name, autofocus, options, required, disabled } = props
   return (
-    <div className={`${fromBuilderStub.inputWrapperClass}`}>
-      <label>{title}</label>
-      <select
+    <FormControl>
+      <InputLabel>{title}</InputLabel>
+      <SelectMui
         autoFocus={autofocus ? "autofocus" : false}
-        onChange={onChange ? (e) => onChange(e) : ""}
-        name={name}
+        disabled={disabled}
+        value=""
         required={required}
-        className={`${fromBuilderStub.iputWrapper} ${className}`}
+        name={title}
+        label={title}
+        onChange={onChange ? (e) => onChange(e) : ""}
       >
         {options &&
           options.map((option, idx) => {
             if (typeof option === "object" && option !== null) {
               const keys = Object.keys(option)
               return (
-                <option key={idx} value={keys[0]}>
+                <MenuItem value={keys[0]} key={idx}>
                   {option[keys[0]]}
-                </option>
+                </MenuItem>
               )
             } else if (typeof option === "string" || typeof option === "number")
               return (
-                <option key={idx} value={option}>
+                <MenuItem key={idx} value={option}>
                   {option}
-                </option>
+                </MenuItem>
               )
           })}
-      </select>
-    </div>
+      </SelectMui>
+    </FormControl>
   )
 }
 
