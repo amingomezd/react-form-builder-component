@@ -62,7 +62,7 @@ const predefinedForm = {
   "values": {}
 }
 
-const App = () => {
+const EditSurvey = () => {
   const [form, setFormState] = useState({})
 
 
@@ -95,7 +95,7 @@ const App = () => {
   </div>
 }
 
-export default App
+export default EditSurvey
 ```
 
 ## License

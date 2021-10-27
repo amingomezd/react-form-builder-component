@@ -13,11 +13,13 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <script>
-      let url_update_survey = ''
-      let csrf_token_survey = ''
-      let surveyOldData = ''
+      let siteProps = {
+        url_update_survey: "example.com",
+        csrf_token_survey: "dasdaddadas",
+        surveyOldData: ""
+      }
     </script>
-    <div id="poll" data-survey="{\u0022ui\u0022: {}, \u0022title\u0022: \u0022Hola mundo 2\u0022, \u0022values\u0022: {}, \u0022properties\u0022: {}, \u0022description\u0022: \u0022descripcion\u0022}"></div>
+    <div id="surveys" data-name="index"></div>
     <meta id="url-update-survey" content="">
     <meta id="csrf-token-survey" content="">
   </body>
