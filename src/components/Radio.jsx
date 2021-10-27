@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { fromBuilderStub } from "./helper"
 import { FormControl, FormControlLabel, FormLabel, RadioGroup, Radio as RadioMui } from "@mui/material"
 
@@ -7,20 +7,18 @@ const Radio = (props) => {
 
   const render = (p, idx) => {
     return (
-      <>
-        <FormControlLabel
-          id={p.id}
-          key={p.id}
-          name={name}
-          value={p.value}
-          control={<RadioMui />}
-          label={p.label}
-          required={required}
-          disabled={disabled}
-          autoFocus={autofocus}
-          onChange={onChange ? (e) => onChange(e) : ""}
-        />
-      </>
+      <FormControlLabel
+        id={p.id}
+        key={p.id}
+        name={name}
+        value={p.value}
+        control={<RadioMui />}
+        label={p.label}
+        required={required}
+        disabled={disabled}
+        autoFocus={autofocus}
+        onChange={onChange ? (e) => onChange(e) : ""}
+      />
     )
   }
   return (

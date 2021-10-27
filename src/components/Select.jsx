@@ -8,12 +8,11 @@ const Select = (props) => {
       <InputLabel>{title}</InputLabel>
       <SelectMui
         autoFocus={autofocus ? "autofocus" : false}
-        disabled={disabled}
         value=""
         required={required}
         name={title}
         label={title}
-        onChange={onChange ? (e) => onChange(e) : ""}
+        onChange={!disabled ? (e) => onChange(e) : ""}
       >
         {options &&
           options.map((option, idx) => {

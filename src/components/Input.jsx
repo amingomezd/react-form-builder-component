@@ -7,7 +7,7 @@ const Input = (props) => {
     <TextField
       label={title}
       name={name}
-      autofocus={autofocus}
+      autoFocus={autofocus}
       required={required}
       onChange={onChange ? (e) => onChange(e) : ""}
       value={value}

@@ -1,19 +1,20 @@
 import React from "react"
 import { fromBuilderStub } from "./helper"
+import { TextField } from "@mui/material"
 
 const Input = (props) => {
-  const { onChange, title, name, autofocus, className, required } = props
+  const { onChange, title, name, autofocus, required } = props
   return (
-    <div className={`${fromBuilderStub.inputWrapperClass}`}>
-      <label>{title}</label>
-      <textarea
-        autoFocus={autofocus ? "autofocus" : false}
-        required={required}
-        onChange={onChange ? (e) => onChange(e) : ""}
-        name={name}
-        className={`${fromBuilderStub.inputClass} ${className}`}
-      ></textarea>
-    </div>
+    <TextField
+      autoFocus={autofocus}
+      label={title}
+      multiline
+      required={required}
+      minRows={4}
+      maxRows={4}
+      name={name}
+      onChange={onChange ? (e) => onChange(e) : ""}
+    />
   )
 }
 

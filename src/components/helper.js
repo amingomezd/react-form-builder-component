@@ -26,6 +26,7 @@ export const fromBuilderStub = {
     title: "Title",
     description: "",
     options: [],
+    headerSizes: [],
   },
   uiStub: {
     widget: "input",
@@ -42,6 +43,7 @@ export const fromBuilderStub = {
     { header: "Titulo" },
     { hr: "Separador" },
   ],
+  headerSizes: ["h1", "h2", "h3", "h4", "h5", "h6"],
   inputClass: "form-control",
   checkboxClass: "form-check-input",
   checkboxWrapperClass: "form-check",

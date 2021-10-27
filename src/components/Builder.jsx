@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { fromBuilderStub } from "./helper"
 import { v4 as uuidv4 } from "uuid"
 import {
@@ -6,17 +6,22 @@ import {
   Button,
   Divider,
   FormControl,
+  FormControlLabel,
   IconButton,
+  InputLabel,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
+  MenuItem,
+  Select as SelectMui,
   Stack,
   TextField,
   Typography,
 } from "@mui/material"
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"
 import DeleteIcon from "@mui/icons-material/Delete"
+import CancelIcon from "@mui/icons-material/Cancel"
 
 const Builder = (props) => {
   const { onSave, onChange, formState, propertyName } = props
@@ -101,9 +106,9 @@ const Builder = (props) => {
   return (
     <Stack spacing={2}>
       <Stack spacing={2}>
-        <TextField label="Form Title" name="title" onChange={handleChangeFormInput} value={form.title} />
+        <TextField label="Título del Formulario" name="title" onChange={handleChangeFormInput} value={form.title} />
         <TextField
-          label="description"
+          label="Descripción"
           name="description"
           placeholder="Minimum 3 rows"
           multiline
@@ -114,14 +119,14 @@ const Builder = (props) => {
       </Stack>
       <Divider />
       <Stack spacing={2}>
-        <Typography variant="h5">Properties</Typography>
+        <Typography variant="h5">Elementos del Formulario</Typography>
         <Box sx={{ display: "flex", height: "100%" }} justifyContent="center">
           <Button
             variant={addProperty ? "text" : "outlined"}
             onClick={() => toggleAdd(!addProperty)}
             endIcon={<AddCircleOutlineIcon />}
           >
-            Add Property
+            Agregar nuevo elemento
           </Button>
         </Box>
         {addProperty && (
@@ -134,9 +139,8 @@ const Builder = (props) => {
       <List>
         {Object.keys(form.properties).map((key, idx) => {
           return (
-            <>
+            <Fragment key={key + idx}>
               <ListItem
-                key={key + idx}
                 disablePadding
                 secondaryAction={
                   <IconButton aria-label="delete" onClick={() => removeProperty(key)}>
@@ -159,12 +163,12 @@ const Builder = (props) => {
                   ui={form.ui[key]}
                 />
               )}
-            </>
+            </Fragment>
           )
         })}
       </List>
       <Button variant="contained" onClick={(e) => onSave(e)}>
-        Save Form
+        Guardar Formulario
       </Button>
     </Stack>
   )
@@ -181,10 +185,10 @@ const PropertyForm = (props) => {
 
   const handleChangeFormInput = (event) => {
     const { target } = event
-    const { name, type } = target
-    const value = type === "checkbox" ? target.checked : target.value
-    event.persist()
-    setFormState({ ...form, [name]: value })
+    const { name, value } = target
+    const newValue = value === "checkbox" ? target.checked : target.value
+    // event.persist();
+    setFormState({ ...form, [name]: newValue })
   }
   useEffect(() => {
     onPropertySubmit(form)
@@ -208,51 +212,51 @@ const PropertyForm = (props) => {
         .join("\n")
     return ""
   }
-
   return (
-    <div className="border p-3 bg-white rounded">
-      <div className={`${fromBuilderStub.inputWrapperClass}`}>
-        <label>Widget</label>
-        <select
-          className={`${fromBuilderStub.inputClass}`}
+    <Stack spacing={2}>
+      <FormControl fullWidth>
+        <InputLabel id="select-widget">Tipo de Elemento</InputLabel>
+        <SelectMui
+          label="Tipo de Elemento"
           value={form?.widget}
           name="widget"
           onChange={handleChangeFormInput}
+          labelId="select-widget"
         >
           {fromBuilderStub.widgets.map((widget, idx) => {
             let widgetName = Object.values(widget).toString()
             let widgetType = Object.keys(widget).toString()
             return (
-              <option key={widgetType + idx} value={widgetType}>
+              <MenuItem key={widgetType + idx} value={widgetType}>
                 {widgetName}
-              </option>
+              </MenuItem>
             )
           })}
-        </select>
-      </div>
-      <div className="form-row">
-        <div className={`${fromBuilderStub.inputWrapperClass} col`}>
-          <label>Title</label>
-          <input
-            type="text"
-            value={form?.title}
-            name="title"
+        </SelectMui>
+      </FormControl>
+      <FormControl>
+        <TextField
+          label="Título del Elemento"
+          name="title"
+          placeholder="Minimum 3 rows"
+          onChange={handleChangeFormInput}
+          value={form?.title}
+        />
+      </FormControl>
+      {form?.widget === "paragraph" ? (
+        <FormControl>
+          <TextField
+            label="Descripción"
+            name="description"
+            placeholder="Párrafo de descripción"
+            multiline
+            rows={3}
             onChange={handleChangeFormInput}
-            className={`${fromBuilderStub.inputClass}`}
+            value={form.description ? form.description : ""}
           />
-        </div>
-        <div className={`${fromBuilderStub.inputWrapperClass} col`}>
-          <label>Type</label>
-          <input
-            type="text"
-            value={form?.type}
-            name="type"
-            onChange={handleChangeFormInput}
-            className={`${fromBuilderStub.inputClass}`}
-          />
-        </div>
-      </div>
-      <div className={`form-row ${fromBuilderStub.inputWrapperClass}`}>
+        </FormControl>
+      ) : null}
+      <FormControl>
         <div className="col">
           <div className={`${fromBuilderStub.checkboxWrapperClass}`}>
             <input
@@ -264,65 +268,87 @@ const PropertyForm = (props) => {
               id="required"
             />
             <label className="form-check-label" htmlFor="required">
-              Required
+              Obligatorio?
             </label>
           </div>
         </div>
-        <div className="col">
-          <div className={`${fromBuilderStub.checkboxWrapperClass}`}>
-            <input
-              type="checkbox"
-              name="autofocus"
-              checked={form?.autofocus}
-              onChange={handleChangeFormInput}
-              className={`${fromBuilderStub.checkboxClass}`}
-              id="autofocus"
-            />
-            <label className="form-check-label" htmlFor="autofocus">
-              Autofocus
-            </label>
-          </div>
-        </div>
-      </div>
-      <div className={`${fromBuilderStub.inputWrapperClass}`}>
-        <label>Class Name</label>
-        <input
-          type="text"
-          value={form?.className}
-          onChange={handleChangeFormInput}
-          name="className"
-          className={`${fromBuilderStub.inputClass}`}
-        />
-      </div>
-      <div className={`${fromBuilderStub.inputWrapperClass}`}>
-        <label>
-          Options <small>(Add options separated by new line)</small>
-        </label>
-        <textarea
-          className={`${fromBuilderStub.inputClass}`}
-          name="options"
-          onChange={handleChangeFormInput}
-          value={form.options ? handleOptions(form.options) : ""}
-        />
-      </div>
-      <div className={`${fromBuilderStub.inputWrapperClass}`}>
-        <label>Description</label>
-        <textarea
-          className={`${fromBuilderStub.inputClass}`}
-          name="description"
-          onChange={handleChangeFormInput}
-          value={form.description ? form.description : ""}
-        />
-      </div>
+        {/*Dejar para analizar después esta función, ahorita no le veo utilidad*/}
+        {/*<div className="col">*/}
+        {/*  <div className={`${fromBuilderStub.checkboxWrapperClass}`}>*/}
+        {/*    <input*/}
+        {/*      type="checkbox"*/}
+        {/*      name="autofocus"*/}
+        {/*      checked={form?.autofocus}*/}
+        {/*      onChange={handleChangeFormInput}*/}
+        {/*      className={`${fromBuilderStub.checkboxClass}`}*/}
+        {/*      id="autofocus"*/}
+        {/*    />*/}
+        {/*    <label className="form-check-label" htmlFor="autofocus">*/}
+        {/*      Autofocus*/}
+        {/*    </label>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+      </FormControl>
+      {/*TODO: Añadir la función para elegir el tamaño del titulo ->*/}
+      {/*<FormControl>*/}
+      {/*  <SelectMui*/}
+      {/*    label="Tamaño del título"*/}
+      {/*    value={form?.options}*/}
+      {/*    name="widget"*/}
+      {/*    onChange={handleChangeFormInput}*/}
+      {/*    labelId="select-widget"*/}
+      {/*  >*/}
+      {/*    {fromBuilderStub.headerSizes.map((size, idx) => {*/}
+      {/*      return (*/}
+      {/*        <MenuItem key={size + idx} value={size}>*/}
+      {/*          {size}*/}
+      {/*        </MenuItem>*/}
+      {/*      )*/}
+      {/*    })}*/}
+      {/*  </SelectMui>*/}
+      {/*</FormControl>*/}
+      {/*Esto no sirve para nada, TODO: eliminar muy pronto*/}
+      {/*<FormControl>*/}
+      {/*  <label>Class Name</label>*/}
+      {/*  <input*/}
+      {/*    type="text"*/}
+      {/*    value={form?.className}*/}
+      {/*    onChange={handleChangeFormInput}*/}
+      {/*    name="className"*/}
+      {/*    className={`${fromBuilderStub.inputClass}`}*/}
+      {/*  />*/}
+      {/*</FormControl>*/}
 
-      <button
-        type="button"
-        className={`${fromBuilderStub.btnClass} btn-outline-warning btn-sm`}
-        onClick={() => discardChanges()}
-      >
-        <i className="fa fa-history" /> Discard Changes
-      </button>
-    </div>
+      {form?.widget === "select" || form?.widget === "radio" ? (
+        <FormControl>
+          <TextField
+            label="Opciones"
+            name="options"
+            placeholder="Add options separated by new line"
+            multiline
+            rows={3}
+            onChange={handleChangeFormInput}
+            value={form.options ? handleOptions(form.options) : ""}
+          />
+          {/*TODO: Validar el radio button si va a ser vertical u horizontal*/}
+          {/*{form?.widget === "radio" && (*/}
+          {/*  <div className={`${fromBuilderStub.inputWrapperClass} col`}>*/}
+          {/*    <label>Type</label>*/}
+          {/*    <input*/}
+          {/*      type="text"*/}
+          {/*      value={form?.type}*/}
+          {/*      name="type"*/}
+          {/*      onChange={handleChangeFormInput}*/}
+          {/*      className={`${fromBuilderStub.inputClass}`}*/}
+          {/*    />*/}
+          {/*  </div>*/}
+          {/*)}*/}
+        </FormControl>
+      ) : null}
+      <Button variant="outlined" onClick={() => discardChanges()} endIcon={<CancelIcon />}>
+        Descartar Cambios
+      </Button>
+    </Stack>
   )
 }
 

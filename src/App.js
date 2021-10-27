@@ -2,7 +2,9 @@ import React from "react"
 import FormBuilder from "./components/Builder"
 import FormRender from "./components/Form"
 import { useState } from "react"
-import { Box, Divider, Grid, Stack } from "@mui/material"
+import { Box, Divider, Grid, Stack, Typography } from "@mui/material"
+import ReactDOM from "react-dom"
+import axios from "axios"
 
 function App() {
   const [form, setFormState] = useState({})
@@ -10,7 +12,14 @@ function App() {
   const handleFormSubmit = (e) => {
     e.preventDefault()
     // handle form builder property save action
-    console.log(JSON.stringify(form))
+    const data = JSON.stringify(form)
+    const url = document.getElementById("url-update-survey").getAttribute("content")
+    const token = document.getElementById("csrf-token-survey").getAttribute("content")
+    const payload = { _token: token, data: data }
+
+    axios.post(url, payload).catch((e) => {
+      console.log(e)
+    })
   }
 
   const handleSubmitDummy = (payload) => {
@@ -36,6 +45,9 @@ function App() {
         </Box>
       </Grid>
       <Grid item xs={7}>
+        <Divider>
+          <Typography variant="caption">Previsualización del Formulario</Typography>
+        </Divider>
         <FormRender {...form} onsubmit={handleSubmitDummy} disabled />
       </Grid>
     </Grid>

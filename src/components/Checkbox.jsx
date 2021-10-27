@@ -1,22 +1,18 @@
 import React from "react"
-import { fromBuilderStub } from "./helper"
+import { FormControlLabel, FormGroup, Checkbox as CheckboxMui } from "@mui/material"
 
 const Checkbox = (props) => {
-  const { onChange, title, name, autofocus } = props
+  const { onChange, title, name, disabled } = props
   return (
-    <div className={`${fromBuilderStub.checkboxWrapperClass} mb-3`}>
-      <input
-        type="checkbox"
-        id={name}
-        autoFocus={autofocus ? "autofocus" : false}
+    <FormGroup>
+      <FormControlLabel
+        disabled={disabled}
         onChange={onChange ? (e) => onChange(e) : ""}
+        control={<CheckboxMui />}
         name={name}
-        className={`${fromBuilderStub.checkboxClass}`}
+        label={title}
       />
-      <label className="form-check-label" htmlFor={name}>
-        {title}
-      </label>
-    </div>
+    </FormGroup>
   )
 }
 

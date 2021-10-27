@@ -1,13 +1,13 @@
 import React from "react"
-import { Typography } from "@mui/material"
+import { FormGroup, Typography } from "@mui/material"
 
 const Paragraph = (props) => {
   const { title, description } = props
   return (
-    <div>
+    <FormGroup>
       <Typography variant="h5">{title}</Typography>
       <Typography>{description}</Typography>
-    </div>
+    </FormGroup>
   )
 }
 
