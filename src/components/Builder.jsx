@@ -136,40 +136,39 @@ const Builder = (props) => {
         )}
       </Stack>
 
-      <List>
-        {Object.keys(form.properties).map((key, idx) => {
-          return (
-            <Fragment key={key + idx}>
-              <ListItem
-                disablePadding
-                secondaryAction={
-                  <IconButton aria-label="delete" onClick={() => removeProperty(key)}>
-                    <DeleteIcon />
-                  </IconButton>
-                }
-              >
-                <ListItemButton onClick={() => toggleEdit(key)}>
-                  <ListItemText>
-                    {form.properties[key].title} {editProperty === key ? "- Edit" : ""}
-                  </ListItemText>
-                </ListItemButton>
-              </ListItem>
-              {editProperty === key && (
-                <PropertyForm
-                  onPropertySubmit={handlePropertyUpdate}
-                  name={key}
-                  property={form.properties[key]}
-                  required={form.required}
-                  ui={form.ui[key]}
-                />
-              )}
-            </Fragment>
-          )
-        })}
-      </List>
-      <Button variant="contained" onClick={(e) => onSave(e)}>
-        Guardar Formulario
-      </Button>
+      {form.properties && (
+        <List>
+          {Object.keys(form.properties).map((key, idx) => {
+            return (
+              <Fragment key={key + idx}>
+                <ListItem
+                  disablePadding
+                  secondaryAction={
+                    <IconButton aria-label="delete" onClick={() => removeProperty(key)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                >
+                  <ListItemButton onClick={() => toggleEdit(key)}>
+                    <ListItemText>
+                      {form.properties[key].title} {editProperty === key ? "- Edit" : ""}
+                    </ListItemText>
+                  </ListItemButton>
+                </ListItem>
+                {editProperty === key && (
+                  <PropertyForm
+                    onPropertySubmit={handlePropertyUpdate}
+                    name={key}
+                    property={form.properties[key]}
+                    required={form.required}
+                    ui={form.ui[key]}
+                  />
+                )}
+              </Fragment>
+            )
+          })}
+        </List>
+      )}
     </Stack>
   )
 }
