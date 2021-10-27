@@ -9,7 +9,7 @@ const surveysDiv = document.getElementById("surveys")
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App surveysDiv={surveysDiv} siteProps={siteProps} />
+      <App surveysDiv={surveysDiv} serverProps={serverProps} />
     </Provider>
   </React.StrictMode>,
   surveys
