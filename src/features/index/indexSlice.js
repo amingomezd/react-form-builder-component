@@ -5,7 +5,10 @@ export const indexSlice = createSlice({
   initialState: {
     allSurveys: {},
     url_update_survey: "",
+    url_create_survey: "",
     csrf_token_survey: "",
+    created_at: "",
+    updated_at: "",
   },
   reducers: {
     varsIndex: (state, action) => {
@@ -13,7 +16,12 @@ export const indexSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.allSurveys = action.payload
+      state.allSurveys = action.payload.allSurveys
+      state.url_update_survey = action.payload.url_update_survey
+      state.url_create_survey = action.payload.url_create_survey
+      state.csrf_token_survey = action.payload.csrf_token_survey
+      state.created_at = action.payload.created_at
+      state.updated_at = action.payload.updated_at
     },
   },
 })
