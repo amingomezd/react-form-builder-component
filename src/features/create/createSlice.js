@@ -1,26 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice as CS } from "@reduxjs/toolkit"
 
-export const editSlice = createSlice({
+export const createSlice = CS({
   name: "index",
   initialState: {
-    surveyData: {},
-    url_survey: "",
+    url_store_survey: "",
     csrf_token_survey: "",
   },
   reducers: {
-    varsEdit: (state, action) => {
+    varsCreate: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.surveyData = action.payload.surveyData
-      state.url_survey = action.payload.url_survey
+      state.url_store_survey = action.payload.url_store_survey
       state.csrf_token_survey = action.payload.csrf_token_survey
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { varsEdit } = editSlice.actions
+export const { varsCreate } = createSlice.actions
 
-export default editSlice.reducer
+export default createSlice.reducer

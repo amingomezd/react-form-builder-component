@@ -12,7 +12,7 @@ const Select = (props) => {
         required={required}
         name={title}
         label={title}
-        onChange={!disabled ? (e) => onChange(e) : ""}
+        onChange={!disabled ? (e) => onChange(e) : null}
       >
         {options &&
           options.map((option, idx) => {

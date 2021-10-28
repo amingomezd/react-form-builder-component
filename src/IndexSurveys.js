@@ -30,17 +30,14 @@ function IndexSurveys() {
     setOpen({ key: key, isOpen: !open.isOpen })
   }
 
-  const EditSurvey = (surveyId) => {
-    return <form action={data.url_update_survey}></form>
-  }
-
   return (
     <Grid>
+      {/*Verify is there is no survey, and shows a message to create anew one*/}
       {data.allSurveys.length !== 0 ? (
         <List>
-          <Divider />
           {data.allSurveys.map((survey) => {
             let surveyData = JSON.parse(survey.data)
+            console.log(survey.status)
             return (
               <Fragment key={survey.id}>
                 <ListItem>
@@ -65,9 +62,12 @@ function IndexSurveys() {
                       </Stack>
                       <Stack direction={"row"} spacing={2} alignItems={"center"}>
                         <Box>
-                          <Button size={"small"} variant={"contained"} href={data.url_update_survey + "/" + survey.id}>
-                            Editar
-                          </Button>
+                          <form action={data.url_survey + "/" + survey.id + "/edit"} method={"GET"}>
+                            <input name="id" value={survey.id} hidden />
+                            <Button size={"small"} variant={"contained"} type={"submit"}>
+                              Editar
+                            </Button>
+                          </form>
                         </Box>
                         <FormControlLabel
                           control={<Switch checked={survey.status === 1} onChange={handleChangeStateSurvey} />}
@@ -77,7 +77,7 @@ function IndexSurveys() {
                     </Stack>
                   </ListItemText>
                 </ListItem>
-                <Divider />
+                {data.allSurveys.length > 1 ? <Divider /> : null}
                 <Collapse
                   in={open.key === survey.id && open.isOpen}
                   timeout="auto"

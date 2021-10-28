@@ -13,14 +13,13 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <script>
-
       let serverProps = {
-        allSurveys: [],
-        url_update_survey: "http://127.0.0.1:8000/admin/surveys",
-        url_create_survey: "http://127.0.0.1:8000/admin/surveys",
-        csrf_token_survey: "XjXY31fTX1R64tNhkv1H4slVFfdzxTvEBEKvtrHW"
+        allSurveys: [{"id":"8b116e01-8a83-44dc-8acb-72ceb29dab85","data":"{\u0022ui\u0022: {\u0022intro\u0022: {\u0022widget\u0022: \u0022paragraph\u0022}}, \u0022title\u0022: \u0022Titulo del Formulario 3dsdasda\u0022, \u0022values\u0022: {}, \u0022required\u0022: [], \u0022properties\u0022: {\u0022intro\u0022: {\u0022name\u0022: \u0022intro\u0022, \u0022title\u0022: \u0022Titulo de ejemplo 3\u0022, \u0022description\u0022: \u00223 Esto es un p\u00e1rrafo. Puedes actualizarme o cambiarme por otros tipos de elementos.\u0022}}, \u0022description\u0022: \u0022Ac\u00e1 puedes describir de que se trata el formulariodsadsaadad\u0022}","summary":null,"status":0,"created_at":"2021-10-28T14:25:45.000000Z","updated_at":"2021-10-28T20:18:29.000000Z","empresa_id":1}],
+        url_create_survey: "http://127.0.0.1:8000/admin/surveys/create",
+        //TODO: buscar la manera de enviar la url de edición
+        url_survey: "http://127.0.0.1:8000/admin/surveys",
+        csrf_token_survey: "jcb0TN4GPjTsF2EKkN72C58iFj4fHKeVpLrHKLbi"
       }
-
     </script>
     <div id="surveys" data-name="index"></div>
     <meta id="url-update-survey" content="">

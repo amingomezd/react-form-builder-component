@@ -186,7 +186,6 @@ const PropertyForm = (props) => {
     const { target } = event
     const { name, value } = target
     const newValue = value === "checkbox" ? target.checked : target.value
-    // event.persist();
     setFormState({ ...form, [name]: newValue })
   }
   useEffect(() => {
@@ -237,7 +236,7 @@ const PropertyForm = (props) => {
         <TextField
           label="Título del Elemento"
           name="title"
-          placeholder="Minimum 3 rows"
+          placeholder="Título que llevará este elemento"
           onChange={handleChangeFormInput}
           value={form?.title}
         />
@@ -323,7 +322,7 @@ const PropertyForm = (props) => {
           <TextField
             label="Opciones"
             name="options"
-            placeholder="Add options separated by new line"
+            placeholder="Agrega opciones separadas por una nueva linea"
             multiline
             rows={3}
             onChange={handleChangeFormInput}

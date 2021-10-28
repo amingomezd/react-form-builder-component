@@ -109,7 +109,7 @@ const Form = (props) => {
           })}
         <Box>
           <Button type="submit" variant="contained" disabled={disabled}>
-            Submit
+            Guardar
           </Button>
         </Box>
       </Stack>

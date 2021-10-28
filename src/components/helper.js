@@ -6,13 +6,13 @@ export function textAreaAdjust(el) {
 
 export const fromBuilderStub = {
   formStub: {
-    title: "Onboard New Employee",
-    description: "FLowhart to onboard new employee to the organization",
+    title: "Titulo del Formulario",
+    description: "Acá puedes describir de que se trata el formulario",
     required: [],
     properties: {
       intro: {
-        title: "Introduction",
-        description: "This is a paragraph element. You can update me or add new form elements.",
+        title: "Titulo de ejemplo",
+        description: "Esto es un párrafo. Puedes actualizarme o cambiarme por otros tipos de elementos.",
       },
     },
     ui: {
@@ -23,7 +23,7 @@ export const fromBuilderStub = {
     values: {},
   },
   propertyStub: {
-    title: "Title",
+    title: "",
     description: "",
     options: [],
     headerSizes: [],

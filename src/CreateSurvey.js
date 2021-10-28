@@ -4,8 +4,8 @@ import FormRender from "./components/Form"
 import { Box, Button, Divider, Grid, Typography } from "@mui/material"
 import { useSelector } from "react-redux"
 
-function EditSurvey() {
-  const data = useSelector((state) => state.edit)
+function CreateSurvey() {
+  const data = useSelector((state) => state.create)
   const [form, setFormState] = useState({})
 
   const handleFormSubmit = (e) => {
@@ -24,19 +24,13 @@ function EditSurvey() {
   return (
     <Grid container direction="row" spacing={2}>
       <Grid item xs={4}>
-        <FormBuilder
-          onSave={handleFormSubmit}
-          formState={JSON.parse(data.surveyData.data || null)}
-          onChange={onFormBuilderUpdate}
-        />
-        <form action={data.url_survey + "/" + data.surveyData.id} method="post" encType="multipart/form-data">
-          <input readOnly name="_token" value={data.csrf_token_survey} hidden />
-          <input type="hidden" name="_method" value="PATCH" />
-          <input readOnly name="data" value={JSON.stringify(form)} hidden />
-          <input readOnly name="survey" value={data.surveyData.id} hidden />
+        <FormBuilder onSave={handleFormSubmit} formState={null} onChange={onFormBuilderUpdate} />
+        <form action={data.url_store_survey} method="POST" encType="multipart/form-data">
           <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <input readOnly name="_token" value={data.csrf_token_survey} hidden />
+            <input readOnly name="data" value={JSON.stringify(form)} hidden />
             <Button variant={"contained"} type={"submit"}>
-              Guardar Formulario
+              Crear Formulario
             </Button>
           </Box>
         </form>
@@ -56,4 +50,4 @@ function EditSurvey() {
   )
 }
 
-export default EditSurvey
+export default CreateSurvey
