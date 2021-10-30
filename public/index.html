@@ -1,28 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <title>Cire Form Builder</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script>
-      let serverProps = {
-        allSurveys: [{"id":"8b116e01-8a83-44dc-8acb-72ceb29dab85","data":"{\u0022ui\u0022: {\u0022intro\u0022: {\u0022widget\u0022: \u0022paragraph\u0022}}, \u0022title\u0022: \u0022Titulo del Formulario 3dsdasda\u0022, \u0022values\u0022: {}, \u0022required\u0022: [], \u0022properties\u0022: {\u0022intro\u0022: {\u0022name\u0022: \u0022intro\u0022, \u0022title\u0022: \u0022Titulo de ejemplo 3\u0022, \u0022description\u0022: \u00223 Esto es un p\u00e1rrafo. Puedes actualizarme o cambiarme por otros tipos de elementos.\u0022}}, \u0022description\u0022: \u0022Ac\u00e1 puedes describir de que se trata el formulariodsadsaadad\u0022}","summary":null,"status":0,"created_at":"2021-10-28T14:25:45.000000Z","updated_at":"2021-10-28T20:18:29.000000Z","empresa_id":1}],
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta
+    name="description"
+    content="Web site created using create-react-app"
+  />
+  <title>Cire Form Builder</title>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<!--You can change the data-name to: index, edit or create-->
+<div id="surveys" data-name="index"></div>
+<script>
+  let serverProps = {}
+
+  switch (document.getElementById("surveys").dataset.name) {
+    case "index":
+      serverProps = {
+        allSurveys: [{
+          "id": "1c5ed4bc-3df7-4ea4-8427-c7e89c2825aa",
+          "data": "{\u0022ui\u0022: {\u0022intro\u0022: {\u0022widget\u0022: \u0022paragraph\u0022}}, \u0022title\u0022: \u0022Titulo del Formulario\u0022, \u0022values\u0022: {}, \u0022required\u0022: [], \u0022properties\u0022: {\u0022intro\u0022: {\u0022title\u0022: \u0022Titulo de ejemplo\u0022, \u0022description\u0022: \u0022Esto es un p\u00e1rrafo. Puedes actualizarme o cambiarme por otros tipos de elementos.\u0022}}, \u0022description\u0022: \u0022Ac\u00e1 puedes describir de que se trata el formulario\u0022}",
+          "summary": null,
+          "status": 0,
+          "created_at": "2021-10-29T21:43:58.000000Z",
+          "updated_at": "2021-10-29T21:43:58.000000Z",
+          "empresa_id": 1
+        }, {
+          "id": "06a60f80-c391-4daf-9c6c-6b46a1033d7f",
+          "data": "{\u0022ui\u0022: {\u0022intro\u0022: {\u0022widget\u0022: \u0022paragraph\u0022}}, \u0022title\u0022: \u0022Como te pareci\u00f3 nuestro servicio\u0022, \u0022values\u0022: {}, \u0022required\u0022: [], \u0022properties\u0022: {\u0022intro\u0022: {\u0022name\u0022: \u0022intro\u0022, \u0022title\u0022: \u0022Titulo de ejemplo\u0022, \u0022description\u0022: \u0022Esto es un p\u00e1rrafo. Puedes actualizarme o cambiarme por otros tipos de elementos.\u0022}}, \u0022description\u0022: \u0022Encuesta de Satisfacci\u00f3n de servicio al cliente\u0022}",
+          "summary": null,
+          "status": 1,
+          "created_at": "2021-10-29T00:26:28.000000Z",
+          "updated_at": "2021-10-29T21:42:47.000000Z",
+          "empresa_id": 1
+        }, {
+          "id": "580a233e-22ae-423f-b638-8c4f01aee3ba",
+          "data": "{\u0022ui\u0022: {\u0022intro\u0022: {\u0022widget\u0022: \u0022paragraph\u0022}, \u00226fdceac6-f1c8-4c5b-a152-6442f09efd5c\u0022: {\u0022widget\u0022: \u0022input\u0022, \u0022autofocus\u0022: false, \u0022className\u0022: \u0022\u0022}, \u0022d9879ee2-b88a-44a8-b810-a656adca0a1e\u0022: {\u0022widget\u0022: \u0022input\u0022, \u0022autofocus\u0022: false, \u0022className\u0022: \u0022\u0022}, \u0022e02db585-cf74-4d59-bb7d-6a9e0ba47891\u0022: {\u0022widget\u0022: \u0022input\u0022, \u0022autofocus\u0022: false, \u0022className\u0022: \u0022\u0022}}, \u0022title\u0022: \u0022Titulo del Formulario 2\u0022, \u0022values\u0022: {}, \u0022required\u0022: [], \u0022properties\u0022: {}, \u0022description\u0022: \u0022Ac\u00e1 puedes describir de que se trata el formulario\u0022}",
+          "summary": null,
+          "status": 0,
+          "created_at": "2021-10-29T00:14:19.000000Z",
+          "updated_at": "2021-10-29T21:42:43.000000Z",
+          "empresa_id": 1
+        }],
         url_create_survey: "http://127.0.0.1:8000/admin/surveys/create",
-        //TODO: buscar la manera de enviar la url de edición
         url_survey: "http://127.0.0.1:8000/admin/surveys",
-        csrf_token_survey: "jcb0TN4GPjTsF2EKkN72C58iFj4fHKeVpLrHKLbi"
+        csrf_token_survey: "hZJPgC8ZyZ5aAky41c5hwoLX4rAfwJfrpONTUby5"
       }
-    </script>
-    <div id="surveys" data-name="index"></div>
-    <meta id="url-update-survey" content="">
-    <meta id="csrf-token-survey" content="">
-  </body>
+      break
+    case "edit":
+      serverProps = {
+        url_survey: "http://127.0.0.1:8000/admin/surveys",
+        csrf_token_survey: "ClNBegKblxqi2bfvdvrUx5Zel6MShHAMIrATzVKz",
+        surveyData: {
+          "id": "1c5ed4bc-3df7-4ea4-8427-c7e89c2825aa",
+          "data": "{\u0022ui\u0022: {\u0022intro\u0022: {\u0022widget\u0022: \u0022paragraph\u0022}}, \u0022title\u0022: \u0022Titulo del Formulario\u0022, \u0022values\u0022: {}, \u0022required\u0022: [], \u0022properties\u0022: {\u0022intro\u0022: {\u0022title\u0022: \u0022Titulo de ejemplo\u0022, \u0022description\u0022: \u0022Esto es un p\u00e1rrafo. Puedes actualizarme o cambiarme por otros tipos de elementos.\u0022}}, \u0022description\u0022: \u0022Ac\u00e1 puedes describir de que se trata el formulario\u0022}",
+          "summary": null,
+          "status": 0,
+          "created_at": "2021-10-29T21:43:58.000000Z",
+          "updated_at": "2021-10-29T21:43:58.000000Z",
+          "empresa_id": 1
+        }
+      }
+      break
+    case "create":
+      serverProps = {
+        url_survey: "http://127.0.0.1:8000/admin/surveys",
+        csrf_token_survey: "vsOrWV9VvkVGMteawDeF2NWLQbYg2lI9U2HA1U2S",
+        surveyData: {
+          "id": "1c5ed4bc-3df7-4ea4-8427-c7e89c2825aa",
+          "data": "{\u0022ui\u0022: {\u0022intro\u0022: {\u0022widget\u0022: \u0022paragraph\u0022}}, \u0022title\u0022: \u0022Titulo del Formulario\u0022, \u0022values\u0022: {}, \u0022required\u0022: [], \u0022properties\u0022: {\u0022intro\u0022: {\u0022title\u0022: \u0022Titulo de ejemplo\u0022, \u0022description\u0022: \u0022Esto es un p\u00e1rrafo. Puedes actualizarme o cambiarme por otros tipos de elementos.\u0022}}, \u0022description\u0022: \u0022Ac\u00e1 puedes describir de que se trata el formulario\u0022}",
+          "summary": null,
+          "status": 0,
+          "created_at": "2021-10-29T21:43:58.000000Z",
+          "updated_at": "2021-10-29T21:43:58.000000Z",
+          "empresa_id": 1
+        }
+      }
+      break
+  }
+</script>
+</body>
 </html>

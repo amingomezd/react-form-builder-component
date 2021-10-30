@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import {
   Box,
@@ -16,14 +16,27 @@ import {
   Typography,
 } from "@mui/material"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
+import { AddCircleOutline } from "@mui/icons-material"
 
 function IndexSurveys() {
   const data = useSelector((state) => state.index)
   //Open Close the survey details panel
   const [open, setOpen] = useState({ key: "", isOpen: false })
+  const [onOff_survey, setOnOff_survey] = useState({ status: 0, id: "0" })
 
-  const handleChangeStateSurvey = () => {
-    console.log("Desactivar/Activar encuesta")
+  // useEffect(() => {
+  //   return () => {
+  //     // document.getElementById("changeStatus").submit()
+  //     // console.log(document.getElementById("changeStatus"))
+  //   }
+  // }, [onOff_survey])
+
+  const handleChangeStatusSurvey = (survey) => {
+    let status = survey.status === 1 ? 0 : 1
+    setOnOff_survey({
+      status: status,
+      id: survey.id,
+    })
   }
 
   const handleOpenClose = (key) => {
@@ -32,12 +45,20 @@ function IndexSurveys() {
 
   return (
     <Grid>
+      <Stack spacing={2}>
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Button variant={"outlined"} href={data.url_create_survey} endIcon={<AddCircleOutline />}>
+            Crear Encuesta
+          </Button>
+        </Box>
+        <Divider />
+      </Stack>
       {/*Verify is there is no survey, and shows a message to create anew one*/}
       {data.allSurveys.length !== 0 ? (
         <List>
-          {data.allSurveys.map((survey) => {
+          {data.allSurveys.map((survey, index) => {
             let surveyData = JSON.parse(survey.data)
-            console.log(survey.status)
+
             return (
               <Fragment key={survey.id}>
                 <ListItem>
@@ -54,30 +75,32 @@ function IndexSurveys() {
                     <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
                       <Stack ml={2}>
                         <Typography variant={"body1"}>
-                          <strong>{surveyData.title}</strong>
+                          <strong>{surveyData.title || "Sin Titulo"}</strong>
                         </Typography>
                         <Typography component="span" variant="body2">
-                          {surveyData.description}
+                          {surveyData.description || "Sin Descripción"}
                         </Typography>
                       </Stack>
                       <Stack direction={"row"} spacing={2} alignItems={"center"}>
                         <Box>
                           <form action={data.url_survey + "/" + survey.id + "/edit"} method={"GET"}>
-                            <input name="id" value={survey.id} hidden />
+                            <input name="id" defaultValue={survey.id} hidden />
                             <Button size={"small"} variant={"contained"} type={"submit"}>
                               Editar
                             </Button>
                           </form>
                         </Box>
                         <FormControlLabel
-                          control={<Switch checked={survey.status === 1} onChange={handleChangeStateSurvey} />}
+                          control={
+                            <Switch checked={survey.status === 1} onChange={() => handleChangeStatusSurvey(survey)} />
+                          }
                           label={survey.status === 1 ? "On" : "Off"}
                         />
                       </Stack>
                     </Stack>
                   </ListItemText>
                 </ListItem>
-                {data.allSurveys.length > 1 ? <Divider /> : null}
+                {/*{data.allSurveys.length > 1 && data.allSurveys.length !== index + 1 ? <Divider /> : null}*/}
                 <Collapse
                   in={open.key === survey.id && open.isOpen}
                   timeout="auto"
@@ -107,13 +130,15 @@ function IndexSurveys() {
           <Typography textAlign={"center"} variant={"h5"}>
             Parece que no haz creado ninguna encuesta aun
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Button variant={"contained"} href={data.url_create_survey}>
-              Crear Encuesta
-            </Button>
-          </Box>
         </Stack>
       )}
+      {/*form to submit state updates to website*/}
+      <form action={data.url_survey + "/" + onOff_survey.id} method="post" id="changeStatus">
+        <input readOnly name="_token" value={data.csrf_token_survey} hidden />
+        <input readOnly name="_method" value="PUT" hidden />
+        <input readOnly name="survey" value={onOff_survey.id || 0} hidden />
+        <input readOnly name="status" value={onOff_survey.status || 0} hidden />
+      </form>
     </Grid>
   )
 }

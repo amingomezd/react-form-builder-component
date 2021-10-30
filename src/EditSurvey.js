@@ -22,7 +22,7 @@ function EditSurvey() {
   }
 
   return (
-    <Grid container direction="row" spacing={2}>
+    <Grid container direction="row" spacing={2} sx={{ px: 1, pt: 1 }}>
       <Grid item xs={4}>
         <FormBuilder
           onSave={handleFormSubmit}

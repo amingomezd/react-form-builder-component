@@ -4,14 +4,15 @@ import { v4 as uuidv4 } from "uuid"
 import {
   Box,
   Button,
+  Collapse,
   Divider,
   FormControl,
-  FormControlLabel,
   IconButton,
   InputLabel,
   List,
   ListItem,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
   MenuItem,
   Select as SelectMui,
@@ -22,6 +23,9 @@ import {
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"
 import DeleteIcon from "@mui/icons-material/Delete"
 import CancelIcon from "@mui/icons-material/Cancel"
+import { RemoveCircleOutline } from "@mui/icons-material"
+import EditIcon from "@mui/icons-material/Edit"
+import CheckIcon from "@mui/icons-material/Check"
 
 const Builder = (props) => {
   const { onSave, onChange, formState, propertyName } = props
@@ -49,7 +53,7 @@ const Builder = (props) => {
   }
 
   const removeProperty = (key) => {
-    if (!window.confirm(`Remove this property "${form.properties[key].title}" ?`)) return
+    if (!window.confirm(`Eliminar este elemento? "${form.properties[key].title}" ?`)) return
     const f = { ...form }
     delete f.properties[key]
     setFormState(f)
@@ -72,7 +76,13 @@ const Builder = (props) => {
       widget,
       autofocus,
     }
+
     required && !ftemp.required.includes(key) && ftemp.required.push(key)
+
+    if (ftemp.properties[name].title === "") {
+      ftemp.properties[name].title = "Sin Título"
+    }
+
     setFormState(ftemp)
   }
 
@@ -123,17 +133,21 @@ const Builder = (props) => {
         <Box sx={{ display: "flex", height: "100%" }} justifyContent="center">
           <Button
             variant={addProperty ? "text" : "outlined"}
+            color={addProperty ? "secondary" : "primary"}
             onClick={() => toggleAdd(!addProperty)}
-            endIcon={<AddCircleOutlineIcon />}
+            endIcon={addProperty ? <RemoveCircleOutline /> : <AddCircleOutlineIcon />}
           >
             Agregar nuevo elemento
           </Button>
         </Box>
-        {addProperty && (
-          <Box component="span" sx={{ p: 2, border: "1px dashed grey", borderRadius: "5px" }}>
-            <PropertyForm onPropertySubmit={handlePropertyUpdate} name={uuidv4()} />
-          </Box>
-        )}
+        <Collapse
+          in={addProperty}
+          timeout="auto"
+          unmountOnExit
+          sx={{ border: "1px dashed grey", borderRadius: "5px", p: 2 }}
+        >
+          <PropertyForm onPropertySubmit={handlePropertyUpdate} name={uuidv4()} />
+        </Collapse>
       </Stack>
 
       {form.properties && (
@@ -149,21 +163,36 @@ const Builder = (props) => {
                     </IconButton>
                   }
                 >
-                  <ListItemButton onClick={() => toggleEdit(key)}>
+                  <ListItemButton
+                    selected={editProperty === key}
+                    onClick={() => toggleEdit(key)}
+                    sx={{ width: "100%" }}
+                  >
+                    <ListItemIcon>
+                      <EditIcon />
+                    </ListItemIcon>
                     <ListItemText>
-                      {form.properties[key].title} {editProperty === key ? "- Edit" : ""}
+                      <Typography sx={{ wordWrap: "break-word" }}>
+                        {form.properties[key].title} {editProperty === key ? "- Editando" : ""}
+                      </Typography>
                     </ListItemText>
                   </ListItemButton>
                 </ListItem>
-                {editProperty === key && (
+                <Collapse
+                  in={editProperty === key}
+                  timeout="auto"
+                  unmountOnExit
+                  sx={{ border: "1px dashed grey", borderRadius: "5px", p: 2, mt: 1 }}
+                >
                   <PropertyForm
                     onPropertySubmit={handlePropertyUpdate}
+                    toggleAdd={toggleAdd}
                     name={key}
                     property={form.properties[key]}
                     required={form.required}
                     ui={form.ui[key]}
                   />
-                )}
+                </Collapse>
               </Fragment>
             )
           })}
@@ -174,7 +203,7 @@ const Builder = (props) => {
 }
 
 const PropertyForm = (props) => {
-  const { name, property, ui, onPropertySubmit, required } = props
+  const { name, property, ui, onPropertySubmit, required, toggleAdd } = props
   const temp = property ? { ...property } : { ...fromBuilderStub.propertyStub }
   Object.assign(temp, ui ? ui : fromBuilderStub.uiStub)
   if (!temp.name) temp.name = name
@@ -343,9 +372,20 @@ const PropertyForm = (props) => {
           {/*)}*/}
         </FormControl>
       ) : null}
-      <Button variant="outlined" onClick={() => discardChanges()} endIcon={<CancelIcon />}>
-        Descartar Cambios
-      </Button>
+      <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+        <Button
+          size={"small"}
+          variant={"text"}
+          color={"secondary"}
+          onClick={() => discardChanges()}
+          endIcon={<CancelIcon />}
+        >
+          Descartar Cambios
+        </Button>
+        <Button size={"small"} variant={"outlined"} onClick={() => toggleAdd(false)} endIcon={<CheckIcon />}>
+          Guardar
+        </Button>
+      </Stack>
     </Stack>
   )
 }
