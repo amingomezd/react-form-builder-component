@@ -10,13 +10,13 @@ export const fromBuilderStub = {
     description: "Acá puedes describir de que se trata el formulario",
     required: [],
     properties: {
-      intro: {
+      0: {
         title: "Titulo de ejemplo",
         description: "Esto es un párrafo. Puedes actualizarme o cambiarme por otros tipos de elementos.",
       },
     },
     ui: {
-      intro: {
+      0: {
         widget: "paragraph",
       },
     },

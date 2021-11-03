@@ -7,6 +7,7 @@ import {
   Divider,
   FormControlLabel,
   Grid,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -17,6 +18,7 @@ import {
 } from "@mui/material"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
 import { AddCircleOutline } from "@mui/icons-material"
+import DeleteIcon from "@mui/icons-material/Delete"
 
 function IndexSurveys() {
   const data = useSelector((state) => state.index)
@@ -24,12 +26,11 @@ function IndexSurveys() {
   const [open, setOpen] = useState({ key: "", isOpen: false })
   const [onOff_survey, setOnOff_survey] = useState({ status: 0, id: "0" })
 
-  // useEffect(() => {
-  //   return () => {
-  //     // document.getElementById("changeStatus").submit()
-  //     // console.log(document.getElementById("changeStatus"))
-  //   }
-  // }, [onOff_survey])
+  useEffect(() => {
+    return () => {
+      document.getElementById("changeStatus").submit()
+    }
+  }, [onOff_survey])
 
   const handleChangeStatusSurvey = (survey) => {
     let status = survey.status === 1 ? 0 : 1
@@ -41,6 +42,13 @@ function IndexSurveys() {
 
   const handleOpenClose = (key) => {
     setOpen({ key: key, isOpen: !open.isOpen })
+  }
+
+  const handleDelete = (e) => {
+    e.preventDefault()
+    window.confirm(
+      "¿Está seguro?\nEsta acción eliminará la encuesta y todas sus respuestas. Proceda con precaución."
+    ) && e.target.submit()
   }
 
   return (
@@ -82,20 +90,27 @@ function IndexSurveys() {
                         </Typography>
                       </Stack>
                       <Stack direction={"row"} spacing={2} alignItems={"center"}>
-                        <Box>
-                          <form action={data.url_survey + "/" + survey.id + "/edit"} method={"GET"}>
-                            <input name="id" defaultValue={survey.id} hidden />
-                            <Button size={"small"} variant={"contained"} type={"submit"}>
-                              Editar
-                            </Button>
-                          </form>
-                        </Box>
+                        <form action={data.url_survey + "/" + survey.id + "/edit"} method={"GET"}>
+                          <input name="id" defaultValue={survey.id} hidden />
+                          <Button size={"small"} variant={"contained"} type={"submit"}>
+                            Editar
+                          </Button>
+                        </form>
                         <FormControlLabel
                           control={
                             <Switch checked={survey.status === 1} onChange={() => handleChangeStatusSurvey(survey)} />
                           }
                           label={survey.status === 1 ? "On" : "Off"}
                         />
+                        <Divider orientation={"vertical"} flexItem />
+                        <form action={data.url_survey + "/" + survey.id} method="POST" onSubmit={handleDelete}>
+                          <input readOnly hidden name={"survey"} defaultValue={survey.id} />
+                          <input readOnly hidden name="_token" value={data.csrf_token_survey} />
+                          <input readOnly hidden name="_method" value="DELETE" />
+                          <IconButton aria-label="delete" type={"submit"}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </form>
                       </Stack>
                     </Stack>
                   </ListItemText>

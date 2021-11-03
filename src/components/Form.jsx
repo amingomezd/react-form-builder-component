@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Input from "./Input"
 import Select from "./Select"
 import Checkbox from "./Checkbox"
@@ -6,16 +6,22 @@ import Textarea from "./Textarea"
 import Radio from "./Radio"
 import Paragraph from "./Paragraph"
 import Header from "./Header"
-import { Box, Button, Divider, Stack, Typography } from "@mui/material"
+import { Box, Divider, Stack, Typography } from "@mui/material"
 
 const Form = (props) => {
-  const { properties, required, ui, description, title, onsubmit, values, disabled } = props
+  const { properties, required, ui, description, title, onsubmit, values, disabled, surveyId, setSurveyAnswers } = props
   const [requiredFields, setRequiredFields] = useState(required ? required : [])
   const [form, setFormState] = useState(values ? values : {})
+
+  //If the form load from the submit form page
+  if (surveyId) {
+    useEffect(() => setSurveyAnswers({ survey_id: surveyId, form }), [form])
+  }
 
   const render = (property, key, pid) => {
     property.name = key
     const widget = ui[key] && ui[key].widget ? ui[key].widget : key === "hr" ? "hr" : "input"
+
     switch (widget) {
       case "input":
         return (
@@ -102,16 +108,13 @@ const Form = (props) => {
           <Typography variant="h4">{title}</Typography>
           <Typography>{description}</Typography>
         </Box>
-        <Divider />
+        <Stack alignItems={"center"}>
+          <Divider sx={{ width: "50%" }} />
+        </Stack>
         {properties &&
           Object.keys(properties).map((key, pid) => {
             return properties[key] && render(properties[key], key, pid)
           })}
-        <Box>
-          <Button type="submit" variant="contained" disabled={disabled}>
-            Guardar
-          </Button>
-        </Box>
       </Stack>
     </form>
   )

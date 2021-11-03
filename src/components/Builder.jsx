@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react"
 import { fromBuilderStub } from "./helper"
-import { v4 as uuidv4 } from "uuid"
 import {
   Box,
   Button,
@@ -33,6 +32,7 @@ const Builder = (props) => {
   const [form, setFormState] = useState(formState ? formState : fromBuilderStub.formStub)
   const [addProperty, setAddProperty] = useState(false)
   const [editProperty, setEditProperty] = useState()
+  const [propertyId, setPropertyId] = useState(0)
 
   useEffect(() => {
     onChange && onChange(form)
@@ -86,6 +86,12 @@ const Builder = (props) => {
     setFormState(ftemp)
   }
 
+  const saveProperty = (e) => {
+    e.preventDefault()
+
+    setAddProperty(false)
+  }
+
   const mapOptions = (payload) => {
     let t = payload && typeof payload === "string" ? payload.split(/\r?\n/) : []
     if (t.length > 0) {
@@ -111,6 +117,7 @@ const Builder = (props) => {
   const toggleAdd = (state) => {
     setAddProperty(state)
     setEditProperty(null)
+    setPropertyId(propertyId + 1)
   }
 
   return (
@@ -127,11 +134,13 @@ const Builder = (props) => {
           value={form.description}
         />
       </Stack>
-      <Divider />
       <Stack spacing={2}>
-        <Typography variant="h5">Elementos del Formulario</Typography>
+        <Divider>
+          <Typography variant="caption">Elementos del Formulario</Typography>
+        </Divider>
         <Box sx={{ display: "flex", height: "100%" }} justifyContent="center">
           <Button
+            size={"small"}
             variant={addProperty ? "text" : "outlined"}
             color={addProperty ? "secondary" : "primary"}
             onClick={() => toggleAdd(!addProperty)}
@@ -146,10 +155,10 @@ const Builder = (props) => {
           unmountOnExit
           sx={{ border: "1px dashed grey", borderRadius: "5px", p: 2 }}
         >
-          <PropertyForm onPropertySubmit={handlePropertyUpdate} name={uuidv4()} />
+          <PropertyForm onPropertySubmit={handlePropertyUpdate} toggleAdd={() => toggleAdd(false)} name={propertyId} />
         </Collapse>
       </Stack>
-
+      {/*When editing an element*/}
       {form.properties && (
         <List>
           {Object.keys(form.properties).map((key, idx) => {
@@ -186,7 +195,7 @@ const Builder = (props) => {
                 >
                   <PropertyForm
                     onPropertySubmit={handlePropertyUpdate}
-                    toggleAdd={toggleAdd}
+                    toggleEdit={() => toggleEdit(key)}
                     name={key}
                     property={form.properties[key]}
                     required={form.required}
@@ -203,7 +212,7 @@ const Builder = (props) => {
 }
 
 const PropertyForm = (props) => {
-  const { name, property, ui, onPropertySubmit, required, toggleAdd } = props
+  const { name, property, ui, onPropertySubmit, required, toggleAdd, toggleEdit } = props
   const temp = property ? { ...property } : { ...fromBuilderStub.propertyStub }
   Object.assign(temp, ui ? ui : fromBuilderStub.uiStub)
   if (!temp.name) temp.name = name
@@ -217,6 +226,7 @@ const PropertyForm = (props) => {
     const newValue = value === "checkbox" ? target.checked : target.value
     setFormState({ ...form, [name]: newValue })
   }
+
   useEffect(() => {
     onPropertySubmit(form)
   }, [form])
@@ -239,6 +249,9 @@ const PropertyForm = (props) => {
         .join("\n")
     return ""
   }
+
+  const save = toggleAdd ? toggleAdd : toggleEdit
+
   return (
     <Stack spacing={2}>
       <FormControl fullWidth>
@@ -382,7 +395,8 @@ const PropertyForm = (props) => {
         >
           Descartar Cambios
         </Button>
-        <Button size={"small"} variant={"outlined"} onClick={() => toggleAdd(false)} endIcon={<CheckIcon />}>
+        {}
+        <Button size={"small"} variant={"outlined"} onClick={save} endIcon={<CheckIcon />}>
           Guardar
         </Button>
       </Stack>

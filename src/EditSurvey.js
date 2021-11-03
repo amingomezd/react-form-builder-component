@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import FormBuilder from "./components/Builder"
 import FormRender from "./components/Form"
-import { Box, Button, Divider, Grid, Typography } from "@mui/material"
+import { Box, Button, Divider, Grid, Stack, Typography } from "@mui/material"
 import { useSelector } from "react-redux"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 
 function EditSurvey() {
   const data = useSelector((state) => state.edit)
@@ -24,22 +25,29 @@ function EditSurvey() {
   return (
     <Grid container direction="row" spacing={2} sx={{ px: 1, pt: 1 }}>
       <Grid item xs={4}>
-        <FormBuilder
-          onSave={handleFormSubmit}
-          formState={JSON.parse(data.surveyData.data || null)}
-          onChange={onFormBuilderUpdate}
-        />
-        <form action={data.url_survey + "/" + data.surveyData.id} method="post" encType="multipart/form-data">
-          <input readOnly name="_token" value={data.csrf_token_survey} hidden />
-          <input type="hidden" name="_method" value="PATCH" />
-          <input readOnly name="data" value={JSON.stringify(form)} hidden />
-          <input readOnly name="survey" value={data.surveyData.id} hidden />
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Button variant={"contained"} type={"submit"}>
-              Guardar Formulario
+        <Stack spacing={2}>
+          <Box>
+            <Button href={data.url_survey} size={"small"} startIcon={<ArrowBackIcon />}>
+              Regresar al listado
             </Button>
           </Box>
-        </form>
+          <FormBuilder
+            onSave={handleFormSubmit}
+            formState={JSON.parse(data.surveyData.data || null)}
+            onChange={onFormBuilderUpdate}
+          />
+          <form action={data.url_survey + "/" + data.surveyData.id} method="post" encType="multipart/form-data">
+            <input readOnly name="_token" value={data.csrf_token_survey} hidden />
+            <input type="hidden" name="_method" value="PATCH" />
+            <input readOnly name="data" value={JSON.stringify(form)} hidden />
+            <input readOnly name="survey" value={data.surveyData.id} hidden />
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Button variant={"contained"} type={"submit"}>
+                Guardar Formulario
+              </Button>
+            </Box>
+          </form>
+        </Stack>
       </Grid>
       <Grid item xs={1}>
         <Box sx={{ display: "flex", height: "100%" }} justifyContent="center">
